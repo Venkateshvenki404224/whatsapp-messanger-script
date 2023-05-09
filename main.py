@@ -30,6 +30,9 @@ discount_percent = 10
 
 # numbers = ['+91123456789', '+91123456789', '+91123456789']
 start_time = time.time()
+message_sent = 0
+message_not_sent = 0
+numbers_not_sent = []
 for number in numbers:
     try:
         search_box = driver.find_element(By.XPATH, value="//div[@class='to2l77zo gfz4du6o ag5g9lrv bze30y65 kao4egtt qh0vvdkp']") # search box
@@ -69,16 +72,19 @@ for number in numbers:
 
         new_chat_message.send_keys(Keys.ENTER)
             # time.sleep(1)
-
+        message_sent += 1
         print("Message sent to " + number + " at " + formatted_time)
     except Exception:
+        message_not_sent += 1
+        numbers_not_sent.append(number)
         print("Message not sent to " + number + " at " + formatted_time)
         continue
 
 
 time.sleep(2)
+driver.quit()
 end_time = time.time()
 time_taken = end_time - start_time
 print("Time taken to send messages : ", time_taken)
-driver.quit()
-print("Message sending completed")
+print(f"Total message sent is: {message_sent+message_not_sent} in that {message_not_sent} numbers didn't have whats app on that number")
+print("List of number that didn't have whats-app  : ", numbers_not_sent)
